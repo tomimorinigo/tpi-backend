@@ -10,6 +10,9 @@ import utn.frc.bda.serviciopruebas.entities.PruebaEntity;
 import utn.frc.bda.serviciopruebas.entities.VehiculoEntity;
 import utn.frc.bda.serviciopruebas.web.api.dto.PruebaDTO;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Service
 public class PruebasService {
 
@@ -62,14 +65,34 @@ public class PruebasService {
     }
 
     // Endpoint 2 -> consultar pruebas en curso
-    public Iterable<PruebaEntity> consultarPruebasEnCurso(){
-        return pruebasRepository.findAll();
+    public List<PruebaDTO> consultarPruebasEnCurso(){
+        List<PruebaEntity> listaPruebas = pruebasRepository.findAll();
+
+        // Obtener las pruebas que no tienen fecha de finalización
+        return listaPruebas.stream().filter(p -> p.getFechaHoraFin() == null)
+                    .map(p -> new PruebaDTO(p)).toList();
     }
 
     // Endpoint 3 -> finalizar prueba con comentarios
-    public void finalizarPrueba(PruebaEntity prueba, String comentarios){
-        prueba.setComentarios(comentarios);
-        pruebasRepository.save(prueba);
+
+    public boolean finalizarPrueba(PruebaDTO prueba, String comentarios){
+        PruebaEntity pruebaFinalizada = prueba.toEntity();
+
+        // Comprobar que la prueba exista
+        if (pruebasRepository.findById(pruebaFinalizada.getId()).isEmpty()){
+            throw new IllegalArgumentException("La prueba no existe");
+        }
+
+        // Comprobar que la prueba no este finalizada
+        if(pruebaFinalizada.getFechaHoraFin() != null){
+            throw new IllegalArgumentException("La prueba ya está finalizada");
+        }
+
+        pruebaFinalizada.setComentarios(comentarios);
+        pruebaFinalizada.setFechaHoraFin(String.valueOf(LocalDateTime.now()));
+
+        pruebasRepository.save(pruebaFinalizada);
+        return true;
     }
 
 }
