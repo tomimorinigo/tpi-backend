@@ -2,8 +2,10 @@ package utn.frc.bda.serviciopruebas.web.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import utn.frc.bda.serviciopruebas.dal.EmpleadoRepository;
 import utn.frc.bda.serviciopruebas.dal.InteresadosRepository;
 import utn.frc.bda.serviciopruebas.dal.PruebasRepository;
+import utn.frc.bda.serviciopruebas.dal.VehiculoRepository;
 import utn.frc.bda.serviciopruebas.entities.EmpleadoEntity;
 import utn.frc.bda.serviciopruebas.entities.InteresadoEntity;
 import utn.frc.bda.serviciopruebas.entities.PruebaEntity;
@@ -19,6 +21,7 @@ public class PruebasService {
     private PruebasRepository pruebasRepository;
     private InteresadosRepository interesadoRepository;
     private VehiculoRepository vehiculoRepository;
+    private EmpleadoRepository empleadoRepository;
 
     @Autowired
     public PruebasService(PruebasRepository pruebasRepository){
@@ -32,7 +35,7 @@ public class PruebasService {
         // Validar que el interesado no tenga la licencia vencida
         InteresadoEntity interesado = interesadoRepository.findById(prueba.getInteresado().getId()).orElseThrow();
 
-        // TODO: Crear funciones para validar que el interesado no tenga la licencia vencida y que no este restringido
+        // valida que el interesado no tenga la licencia vencida y que no este restringido
         if(interesado.getLicenciaVencida() && interesado.isRestringido()){
             throw new IllegalArgumentException("El interesado ya tiene la licencia vencida o está restringido a probar vehículos");
         }
@@ -52,7 +55,7 @@ public class PruebasService {
         vehiculo.addPrueba(prueba);
         vehiculoRepository.save(vehiculo);
 
-        EmpleadoEntity empleado = empleadoRepository.findById(prueba.getEmpleado().getId()).orElseThrow();
+        EmpleadoEntity empleado = empleadoRepository.findById(prueba.getEmpleado().getLegajo()).orElseThrow();
         prueba.setEmpleado(empleado);
 
         return new PruebaDTO(pruebasRepository.save(prueba));

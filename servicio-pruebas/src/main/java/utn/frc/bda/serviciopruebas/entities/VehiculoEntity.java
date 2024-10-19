@@ -15,7 +15,7 @@ import java.util.Set;
 @Table(name="vehiculos")
 public class VehiculoEntity {
     @Id @Column(name="id", nullable=false)
-    private int id;
+    private Integer id;
 
     @Basic @Column(name="patente")
     private String patente;
