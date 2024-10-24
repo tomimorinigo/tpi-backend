@@ -11,43 +11,32 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@ToString
-@Entity
-@Table(name="vehiculos")
+@Getter @Setter @NoArgsConstructor @ToString
+@Entity @Table(name="interesados")
 public class InteresadoEntity {
     @Id
     @Column(name = "id")
     private Integer id;
 
-    @Basic
-    @Column(name = "tipo_documento")
+    @Basic @Column(name = "tipo_documento")
     private String tipoDocumento;
 
-    @Basic
-    @Column(name = "Documento")
+    @Basic @Column(name = "Documento")
     private String Documento;
 
-    @Basic
-    @Column(name = "nombre")
+    @Basic @Column(name = "nombre")
     private String nombre;
 
-    @Basic
-    @Column(name = "apellido")
+    @Basic @Column(name = "apellido")
     private String apellido;
 
-    @Basic
-    @Column(name = "restringido")
+    @Basic @Column(name = "restringido")
     private Integer restringido;
 
-    @Basic
-    @Column(name = "nro_licencia")
+    @Basic @Column(name = "nro_licencia")
     private Integer nroLicencia;
 
-    @Basic
-    @Column(name = "fecha_vencimiento_licencia")
+    @Basic @Column(name = "fecha_vencimiento_licencia")
     private String fechaVencimientoLicencia;
 
     @OneToMany(mappedBy = "interesado")
@@ -65,18 +54,10 @@ public class InteresadoEntity {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate fechaRegistrada = LocalDate.parse(fechaVencimientoLicencia, formatter);
         LocalDate fechaActual = LocalDate.now();
-        if (fechaRegistrada.isBefore(fechaActual)) {
-            return true;
-        } else {
-            return false;
-        }
+        return fechaRegistrada.isBefore(fechaActual);
     }
 
     public boolean isRestringido(){
-        if(restringido == 0){
-            return false;
-        }else{
-            return true;
-        }
+        return restringido != 0;
     }
 }

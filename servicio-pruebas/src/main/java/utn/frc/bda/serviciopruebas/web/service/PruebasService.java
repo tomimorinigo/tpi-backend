@@ -19,33 +19,51 @@ import java.util.List;
 public class PruebasService {
 
     private PruebasRepository pruebasRepository;
+
+    private InteresadoService interesadoService;
+    private EmpleadoService empleadoService;
+    private VehiculoService vehiculoService;
+
     private InteresadosRepository interesadoRepository;
     private VehiculoRepository vehiculoRepository;
     private EmpleadoRepository empleadoRepository;
 
     @Autowired
-    public PruebasService(PruebasRepository pruebasRepository){
+    public PruebasService(PruebasRepository pruebasRepository,
+                              InteresadoService interesadoService,
+                              EmpleadoService empleadoService,
+                              VehiculoService vehiculoService,
+                              InteresadosRepository interesadoRepository,
+                              VehiculoRepository vehiculoRepository,
+                              EmpleadoRepository empleadoRepository){
         this.pruebasRepository = pruebasRepository;
+        this.interesadoService = interesadoService;
+        this.empleadoService = empleadoService;
+        this.vehiculoService = vehiculoService;
+        this.interesadoRepository = interesadoRepository;
+        this.vehiculoRepository = vehiculoRepository;
+        this.empleadoRepository = empleadoRepository;
     }
 
     // Endpoint 1 -> crear prueba
     public PruebaDTO crearPrueba(PruebaDTO pruebaDTO){
+
+        InteresadoEntity interesado = interesadoService.findById(pruebaDTO.getInteresadoId()).orElseThrow();
+        EmpleadoEntity empleado = empleadoService.findById(pruebaDTO.getEmpleadoId()).orElseThrow();
+        VehiculoEntity vehiculo = vehiculoService.findById(pruebaDTO.getVehiculoId()).orElseThrow();
+
         PruebaEntity prueba = pruebaDTO.toEntity();
 
-        // Validar que el interesado no tenga la licencia vencida
-        InteresadoEntity interesado = interesadoRepository.findById(prueba.getInteresado().getId()).orElseThrow();
-
-        // valida que el interesado no tenga la licencia vencida y que no este restringido
+        // Valida que el interesado no tenga la licencia vencida y que no este restringido
         if(interesado.getLicenciaVencida() && interesado.isRestringido()){
             throw new IllegalArgumentException("El interesado ya tiene la licencia vencida o está restringido a probar vehículos");
         }
-
         prueba.setInteresado(interesado);
+        interesado.addPrueba(prueba);
+        // TODO: NO DEBERIA SER ASI, SINO QUE SE DEBERIA LLAMAR AL SERVICIO DE INTERESADOS
+        interesadoRepository.save(interesado);
 
-        // TODO: Validar que el auto no este siendo probado en ese mismo momento
-        // TODO: Crear repositories para los vehiculos y empleados
-        VehiculoEntity vehiculo = vehiculoRepository.findById(prueba.getVehiculo().getId()).orElseThrow();
-
+        // Validar que el auto no este siendo probado en ese mismo momento
         if (!validarUsoVehiculo(vehiculo)){
             throw new IllegalArgumentException("El vehiculo ya está siendo probado en ese momento");
         }
@@ -53,10 +71,13 @@ public class PruebasService {
 
         // Agregamos a la lista de pruebas del vehiculo y lo guardamos
         vehiculo.addPrueba(prueba);
+        // TODO: NO DEBERIA SER ASI, SINO QUE SE DEBERIA LLAMAR AL SERVICIO DE VEHICULOS
         vehiculoRepository.save(vehiculo);
 
-        EmpleadoEntity empleado = empleadoRepository.findById(prueba.getEmpleado().getLegajo()).orElseThrow();
         prueba.setEmpleado(empleado);
+        empleado.addPrueba(prueba);
+        // TODO: NO DEBERIA SER ASI, SINO QUE SE DEBERIA LLAMAR AL SERVICIO DE EMPLEADOS
+        empleadoRepository.save(empleado);
 
         return new PruebaDTO(pruebasRepository.save(prueba));
     }

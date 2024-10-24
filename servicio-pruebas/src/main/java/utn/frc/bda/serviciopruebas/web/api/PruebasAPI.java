@@ -1,10 +1,9 @@
 package utn.frc.bda.serviciopruebas.web.api;
-;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import utn.frc.bda.serviciopruebas.entities.PruebaEntity;
 import utn.frc.bda.serviciopruebas.web.api.dto.PruebaDTO;
 import utn.frc.bda.serviciopruebas.web.service.PruebasService;
 
