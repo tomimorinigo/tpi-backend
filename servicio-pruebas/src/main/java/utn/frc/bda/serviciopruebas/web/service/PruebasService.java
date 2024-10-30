@@ -13,6 +13,7 @@ import utn.frc.bda.serviciopruebas.entities.VehiculoEntity;
 import utn.frc.bda.serviciopruebas.web.api.dto.PruebaDTO;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -53,6 +54,11 @@ public class PruebasService {
         VehiculoEntity vehiculo = vehiculoService.findById(pruebaDTO.getVehiculoId()).orElseThrow();
 
         PruebaEntity prueba = pruebaDTO.toEntity();
+
+        // Obtencion de la fecha y hora actual de la prueba
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime fechaHoraActual = LocalDateTime.now();
+        prueba.setFechaHoraInicio(String.valueOf(fechaHoraActual));
 
         // Valida que el interesado no tenga la licencia vencida y que no este restringido
         if(interesado.getLicenciaVencida() && interesado.isRestringido()){
@@ -99,24 +105,29 @@ public class PruebasService {
 
     // Endpoint 3 -> finalizar prueba con comentarios
 
-    public boolean finalizarPrueba(PruebaDTO prueba, String comentarios){
-        PruebaEntity pruebaFinalizada = prueba.toEntity();
+    public boolean finalizarPrueba(PruebaDTO prueba){
+        try{
+            PruebaEntity pruebaFinalizada = pruebasRepository.getById(prueba.getId());
+            // Comprobar que la prueba exista
+            if (pruebaFinalizada == null){
+                throw new IllegalArgumentException("La prueba no existe");
+            }
+            // Comprobar que la prueba no este finalizada
+            if(pruebaFinalizada.getFechaHoraFin() != null){
+                throw new IllegalArgumentException("La prueba ya está finalizada");
+            }
+            pruebaFinalizada.setComentarios(prueba.getComentarios());
 
-        // Comprobar que la prueba exista
-        if (pruebasRepository.findById(pruebaFinalizada.getId()).isEmpty()){
-            throw new IllegalArgumentException("La prueba no existe");
+            // Obtencion de la fecha actual para la fecha de finalización de la prueba
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            LocalDateTime fechaHoraActual = LocalDateTime.now();
+            pruebaFinalizada.setFechaHoraFin(String.valueOf(fechaHoraActual));
+
+            pruebasRepository.save(pruebaFinalizada);
+            return true;
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Error al finalizar la prueba");
         }
-
-        // Comprobar que la prueba no este finalizada
-        if(pruebaFinalizada.getFechaHoraFin() != null){
-            throw new IllegalArgumentException("La prueba ya está finalizada");
-        }
-
-        pruebaFinalizada.setComentarios(comentarios);
-        pruebaFinalizada.setFechaHoraFin(String.valueOf(LocalDateTime.now()));
-
-        pruebasRepository.save(pruebaFinalizada);
-        return true;
     }
 
 }

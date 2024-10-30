@@ -15,10 +15,10 @@ public class PruebaEntity {
     @Column(name="fecha_hora_inicio", nullable=false)
     private String fechaHoraInicio;
 
-    @Column(name="fecha_hora_fin", nullable=false)
+    @Column(name="fecha_hora_fin", nullable=true)
     private String fechaHoraFin;
 
-    @Column(name="comentarios", nullable=false)
+    @Column(name="comentarios")
     private String comentarios;
 
     @ManyToOne
@@ -33,10 +33,8 @@ public class PruebaEntity {
     @JoinColumn(name="id_vehiculo")
     private VehiculoEntity vehiculo;
 
-    public PruebaEntity(Integer id, String fechaHoraInicio, String fechaHoraFin, String comentarios){
+    public PruebaEntity(Integer id, String comentarios){
         this.id = id;
-        this.fechaHoraInicio = fechaHoraInicio;
-        this.fechaHoraFin = fechaHoraFin;
         this.comentarios = comentarios;
     }
 }

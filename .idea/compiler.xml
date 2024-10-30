@@ -8,9 +8,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="servicio-pruebas" />
-        <module name="servicio-posicion" />
-        <module name="servicio-reportes" />
-        <module name="tpi-gateway" />
       </profile>
     </annotationProcessing>
   </component>

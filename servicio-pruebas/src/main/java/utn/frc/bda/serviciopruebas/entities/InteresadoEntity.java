@@ -51,7 +51,8 @@ public class InteresadoEntity {
     }
 
     public boolean getLicenciaVencida(){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        // Formato: '2025-01-01 00:00:00'
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDate fechaRegistrada = LocalDate.parse(fechaVencimientoLicencia, formatter);
         LocalDate fechaActual = LocalDate.now();
         return fechaRegistrada.isBefore(fechaActual);

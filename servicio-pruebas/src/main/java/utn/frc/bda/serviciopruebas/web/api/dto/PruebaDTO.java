@@ -2,10 +2,7 @@ package utn.frc.bda.serviciopruebas.web.api.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import utn.frc.bda.serviciopruebas.entities.EmpleadoEntity;
-import utn.frc.bda.serviciopruebas.entities.InteresadoEntity;
 import utn.frc.bda.serviciopruebas.entities.PruebaEntity;
-import utn.frc.bda.serviciopruebas.entities.VehiculoEntity;
 
 @Data @NoArgsConstructor
 public class PruebaDTO {
@@ -29,6 +26,6 @@ public class PruebaDTO {
     }
 
     public PruebaEntity toEntity(){
-        return new PruebaEntity(id, fechaHoraInicio, fechaHoraFin, comentarios);
+        return new PruebaEntity();
     }
 }

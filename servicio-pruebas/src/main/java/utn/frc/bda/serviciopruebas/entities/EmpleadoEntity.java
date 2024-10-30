@@ -30,8 +30,8 @@ public class EmpleadoEntity {
     @Column(name = "apellido")
     private String apellido;
 
-    @Basic @Column(name = "telefono")
-    private Integer telefono;
+    @Basic @Column(name = "TELEFONO_CONTACTO")
+    private Long telefono;
 
     @OneToMany(mappedBy = "empleado")
     private Set<PruebaEntity> pruebas;

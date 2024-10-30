@@ -10,7 +10,7 @@ import utn.frc.bda.serviciopruebas.web.service.PruebasService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/pruebas")
+@RequestMapping("/pruebas")
 public class PruebasAPI {
 
     private PruebasService pruebasService;
@@ -40,10 +40,9 @@ public class PruebasAPI {
     }
 
     // Endpoint 3 -> finalizar prueba con comentarios
-    // TODO: VER SI LO PASAMOS DIRECTAMENTE EN EL DTO AL COMENTARIO O SI LO PASAMOS COMO PARAMETRO
     @PutMapping("/finalizar")
-    public ResponseEntity finalizarPrueba(@RequestBody PruebaDTO prueba, @RequestParam String comentarios){
-        return pruebasService.finalizarPrueba(prueba, comentarios)
+    public ResponseEntity finalizarPrueba(@RequestBody PruebaDTO prueba){
+        return pruebasService.finalizarPrueba(prueba)
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

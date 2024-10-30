@@ -5,7 +5,7 @@ import lombok.*;
 
 import java.util.Set;
 
-@Entity @Table(name="marca")
+@Entity @Table(name="marcas")
 @Getter @Setter @ToString @NoArgsConstructor
 public class MarcaEntity {
 
