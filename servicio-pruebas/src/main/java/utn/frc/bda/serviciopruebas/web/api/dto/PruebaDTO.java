@@ -10,19 +10,18 @@ public class PruebaDTO {
     private String fechaHoraInicio;
     private String fechaHoraFin;
     private String comentarios;
-    private Integer interesadoId;
-    private Integer empleadoId;
-    private Integer vehiculoId;
+    private InteresadoDTO interesado;
+    private EmpleadoDTO empleado;
+    private VehiculoDTO vehiculo;
 
-
-    public PruebaDTO(PruebaEntity prueba){
+    public PruebaDTO(PruebaEntity prueba) {
         this.id = prueba.getId();
         this.fechaHoraInicio = prueba.getFechaHoraInicio();
         this.fechaHoraFin = prueba.getFechaHoraFin();
         this.comentarios = prueba.getComentarios();
-        this.interesadoId = prueba.getInteresado().getId();
-        this.empleadoId = prueba.getEmpleado().getLegajo();
-        this.vehiculoId = prueba.getVehiculo().getId();
+        this.interesado = new InteresadoDTO(prueba.getInteresado());
+        this.empleado = new EmpleadoDTO(prueba.getEmpleado());
+        this.vehiculo = new VehiculoDTO(prueba.getVehiculo());
     }
 
     public PruebaEntity toEntity(){

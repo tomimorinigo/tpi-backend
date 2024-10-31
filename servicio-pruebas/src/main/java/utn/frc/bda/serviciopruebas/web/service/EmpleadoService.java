@@ -21,4 +21,8 @@ public class EmpleadoService {
         return empleadoRepository.findById(id);
     }
 
+    public void save(EmpleadoEntity empleado){
+        empleadoRepository.save(empleado);
+    }
+
 }

@@ -4,7 +4,7 @@ import lombok.*;
 import jakarta.persistence.*;
 
 @Entity @Table(name="pruebas")
-@Getter @Setter @ToString @NoArgsConstructor
+@Getter @Setter @NoArgsConstructor
 public class PruebaEntity {
 
     @Id
@@ -36,5 +36,15 @@ public class PruebaEntity {
     public PruebaEntity(Integer id, String comentarios){
         this.id = id;
         this.comentarios = comentarios;
+    }
+
+    @Override
+    public String toString() {
+        return "PruebaEntity{" +
+                "id=" + id +
+                ", fechaHoraInicio='" + fechaHoraInicio + '\'' +
+                ", fechaHoraFin='" + fechaHoraFin + '\'' +
+                ", comentarios='" + comentarios + '\'' +
+                '}';
     }
 }

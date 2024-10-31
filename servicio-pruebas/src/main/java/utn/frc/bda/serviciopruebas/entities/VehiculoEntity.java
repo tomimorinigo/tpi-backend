@@ -29,7 +29,6 @@ public class VehiculoEntity {
     @Column(name = "id_posicion")
     private Set<Long> posicionIds = new HashSet<>(); // Almacenas solo los IDs de las posiciones
 
-
     @OneToMany(mappedBy="vehiculo")
     private Set<PruebaEntity> pruebas;
 

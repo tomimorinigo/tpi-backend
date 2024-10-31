@@ -21,4 +21,8 @@ public class InteresadoService {
         return interesadosRepository.findById(id);
     }
 
+    public void save(InteresadoEntity interesado){
+        interesadosRepository.save(interesado);
+    }
+
 }

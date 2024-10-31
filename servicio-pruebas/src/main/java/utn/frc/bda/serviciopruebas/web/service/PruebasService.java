@@ -25,10 +25,6 @@ public class PruebasService {
     private EmpleadoService empleadoService;
     private VehiculoService vehiculoService;
 
-    private InteresadosRepository interesadoRepository;
-    private VehiculoRepository vehiculoRepository;
-    private EmpleadoRepository empleadoRepository;
-
     @Autowired
     public PruebasService(PruebasRepository pruebasRepository,
                               InteresadoService interesadoService,
@@ -41,17 +37,21 @@ public class PruebasService {
         this.interesadoService = interesadoService;
         this.empleadoService = empleadoService;
         this.vehiculoService = vehiculoService;
-        this.interesadoRepository = interesadoRepository;
-        this.vehiculoRepository = vehiculoRepository;
-        this.empleadoRepository = empleadoRepository;
     }
 
     // Endpoint 1 -> crear prueba
     public PruebaDTO crearPrueba(PruebaDTO pruebaDTO){
 
-        InteresadoEntity interesado = interesadoService.findById(pruebaDTO.getInteresadoId()).orElseThrow();
-        EmpleadoEntity empleado = empleadoService.findById(pruebaDTO.getEmpleadoId()).orElseThrow();
-        VehiculoEntity vehiculo = vehiculoService.findById(pruebaDTO.getVehiculoId()).orElseThrow();
+        System.out.println(pruebaDTO.getInteresado());
+        System.out.println(pruebaDTO.getEmpleado());
+        System.out.println(pruebaDTO.getVehiculo());
+
+        Integer interesadoId = pruebaDTO.getInteresado().getId();
+        Integer empleadoId = pruebaDTO.getEmpleado().getLegajo();
+        Integer vehiculoId = pruebaDTO.getVehiculo().getId();
+        InteresadoEntity interesado = interesadoService.findById(interesadoId).orElseThrow();
+        EmpleadoEntity empleado = empleadoService.findById(empleadoId).orElseThrow();
+        VehiculoEntity vehiculo = vehiculoService.findById(vehiculoId).orElseThrow();
 
         PruebaEntity prueba = pruebaDTO.toEntity();
 
@@ -66,8 +66,7 @@ public class PruebasService {
         }
         prueba.setInteresado(interesado);
         interesado.addPrueba(prueba);
-        // TODO: NO DEBERIA SER ASI, SINO QUE SE DEBERIA LLAMAR AL SERVICIO DE INTERESADOS
-        interesadoRepository.save(interesado);
+        interesadoService.save(interesado);
 
         // Validar que el auto no este siendo probado en ese mismo momento
         if (!validarUsoVehiculo(vehiculo)){
@@ -77,13 +76,11 @@ public class PruebasService {
 
         // Agregamos a la lista de pruebas del vehiculo y lo guardamos
         vehiculo.addPrueba(prueba);
-        // TODO: NO DEBERIA SER ASI, SINO QUE SE DEBERIA LLAMAR AL SERVICIO DE VEHICULOS
-        vehiculoRepository.save(vehiculo);
+        vehiculoService.save(vehiculo);
 
         prueba.setEmpleado(empleado);
         empleado.addPrueba(prueba);
-        // TODO: NO DEBERIA SER ASI, SINO QUE SE DEBERIA LLAMAR AL SERVICIO DE EMPLEADOS
-        empleadoRepository.save(empleado);
+        empleadoService.save(empleado);
 
         return new PruebaDTO(pruebasRepository.save(prueba));
     }
@@ -91,7 +88,7 @@ public class PruebasService {
     private Boolean validarUsoVehiculo(VehiculoEntity vehiculo){
         // Comprobar que el vehiculo no este siendo probado en ese mismo momento, verificando que ninguna prueba utilice
         // el mismo vehiculo y no tenga fecha de finalización
-        return vehiculo.getPruebas().stream().noneMatch(p -> p.getFechaHoraFin() != null);
+        return vehiculo.getPruebas().stream().allMatch(p -> p.getFechaHoraFin() != null);
     }
 
     // Endpoint 2 -> consultar pruebas en curso
@@ -104,7 +101,6 @@ public class PruebasService {
     }
 
     // Endpoint 3 -> finalizar prueba con comentarios
-
     public boolean finalizarPrueba(PruebaDTO prueba){
         try{
             PruebaEntity pruebaFinalizada = pruebasRepository.getById(prueba.getId());
@@ -122,6 +118,11 @@ public class PruebasService {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             LocalDateTime fechaHoraActual = LocalDateTime.now();
             pruebaFinalizada.setFechaHoraFin(String.valueOf(fechaHoraActual));
+
+            // Borramos la prueba de la lista de pruebas del vehiculo
+            VehiculoEntity vehiculo = pruebaFinalizada.getVehiculo();
+            vehiculo.getPruebas().remove(pruebaFinalizada);
+            vehiculoService.save(vehiculo);
 
             pruebasRepository.save(pruebaFinalizada);
             return true;

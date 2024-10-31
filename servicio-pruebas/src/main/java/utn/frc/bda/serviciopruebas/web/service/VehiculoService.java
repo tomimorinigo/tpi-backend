@@ -21,4 +21,8 @@ public class VehiculoService {
         return vehiculoRepository.findById(id);
     }
 
+    public void save(VehiculoEntity vehiculo){
+        vehiculoRepository.save(vehiculo);
+    }
+
 }
