@@ -25,4 +25,17 @@ public class VehiculoService {
         vehiculoRepository.save(vehiculo);
     }
 
+    public Boolean validarUsoVehiculo(VehiculoEntity vehiculo){
+        // Comprobar que el vehiculo no este siendo probado en ese mismo momento, verificando que ninguna prueba utilice
+        // el mismo vehiculo y no tenga fecha de finalización
+        // Retorna true si todos los pruebas están finalizadas, es decir, no tiene ninguna prueba en curso
+        return vehiculo.getPruebas().stream().allMatch(p -> p.getFechaHoraFin() != null);
+    }
+
+    public boolean recibirVehiculo(Integer idVehiculo){
+        Optional<VehiculoEntity> vehiculo = findById(idVehiculo);
+        // Retornamos true si el vehiculo esta siendo probado en ese momento
+        return !validarUsoVehiculo(vehiculo.orElseThrow());
+    }
+
 }

@@ -69,7 +69,7 @@ public class PruebasService {
         interesadoService.save(interesado);
 
         // Validar que el auto no este siendo probado en ese mismo momento
-        if (!validarUsoVehiculo(vehiculo)){
+        if (!vehiculoService.validarUsoVehiculo(vehiculo)){
             throw new IllegalArgumentException("El vehiculo ya está siendo probado en ese momento");
         }
         prueba.setVehiculo(vehiculo);
@@ -85,11 +85,6 @@ public class PruebasService {
         return new PruebaDTO(pruebasRepository.save(prueba));
     }
 
-    private Boolean validarUsoVehiculo(VehiculoEntity vehiculo){
-        // Comprobar que el vehiculo no este siendo probado en ese mismo momento, verificando que ninguna prueba utilice
-        // el mismo vehiculo y no tenga fecha de finalización
-        return vehiculo.getPruebas().stream().allMatch(p -> p.getFechaHoraFin() != null);
-    }
 
     // Endpoint 2 -> consultar pruebas en curso
     public List<PruebaDTO> consultarPruebasEnCurso(){

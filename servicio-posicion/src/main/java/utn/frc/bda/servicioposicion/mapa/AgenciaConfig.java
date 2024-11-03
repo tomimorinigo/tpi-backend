@@ -5,9 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class AgenciaConfig {
-    private double latitud;
-    private double longitud;
-    private double radio;
+    private Coordenadas coordenadasAgencia;
+    private double radioAdmitidoKm;
+    private List<ZonaPeligrosa> zonasRestringidas;
 }
