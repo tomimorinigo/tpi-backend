@@ -58,7 +58,7 @@ public class PruebasService {
         // Obtencion de la fecha y hora actual de la prueba
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime fechaHoraActual = LocalDateTime.now();
-        prueba.setFechaHoraInicio(String.valueOf(fechaHoraActual));
+        prueba.setFechaHoraInicio(formatter.format(fechaHoraActual));
 
         // Valida que el interesado no tenga la licencia vencida y que no este restringido
         if(interesado.getLicenciaVencida() && interesado.isRestringido()){
@@ -124,6 +124,15 @@ public class PruebasService {
         } catch (Exception e) {
             throw new IllegalArgumentException("Error al finalizar la prueba");
         }
+    }
+
+    public PruebaDTO consultarPruebaActual(Integer idVehiculo){
+        //PruebaEntity prueba = pruebasRepository.findById(idVehiculo).orElseThrow();
+        VehiculoEntity vehiculo = vehiculoService.findById(idVehiculo).orElseThrow();
+        // Comprobamos que la prueba no este finalizada
+        PruebaEntity prueba = vehiculo.getPruebas().stream().filter(p -> p.getFechaHoraFin() == null).findFirst().orElseThrow();
+        // Retornamos la prueba
+        return new PruebaDTO(prueba);
     }
 
 }

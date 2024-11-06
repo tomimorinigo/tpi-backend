@@ -8,7 +8,6 @@ import utn.frc.bda.servicioposicion.mapa.AgenciaConfig;
 @Service
 public class VehiculoService {
 
-    // TODO: PONER URL DE VEHICULO EN APPLICATION.PROPERTIES
     // URL: http://localhost:8080/vehiculo/recibir-vehiculo
     @Value("${vehiculo.service.url}")
     private String vehiculoServiceUrl;

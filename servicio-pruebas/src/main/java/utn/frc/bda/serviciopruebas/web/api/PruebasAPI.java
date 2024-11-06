@@ -46,4 +46,9 @@ public class PruebasAPI {
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
+    @GetMapping("/prueba-actual")
+    public ResponseEntity<PruebaDTO> consultarPruebaActual(@RequestParam Integer idVehiculo){
+        return new ResponseEntity<>(pruebasService.consultarPruebaActual(idVehiculo), HttpStatus.OK);
+    }
 }

@@ -10,18 +10,23 @@ public class PosicionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id", nullable=false)
-    private Long id;
+    private Integer id;
 
     @Column(name="latitud", nullable=false)
-    private Integer latitud;
+    private double latitud;
 
     @Column(name="longitud", nullable=false)
-    private Integer longitud;
+    private double longitud;
 
-    @Column(name="fecha", nullable=false)
-    private String fecha;
+    @Column(name="fecha_hora", nullable=false)
+    private String fechaHora;
 
     @Column(name = "id_vehiculo")
-    private Long idVehiculo;
+    private Integer idVehiculo;
 
+    public PosicionEntity(double latitud, double longitud, Integer idVehiculo){
+        this.latitud = latitud;
+        this.longitud = longitud;
+        this.idVehiculo = idVehiculo;
+    }
 }

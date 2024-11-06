@@ -38,3 +38,8 @@ CREATE TABLE Destinatarios_Promociones
     TELEFONO     VARCHAR(50)                          NOT NULL,
     FOREIGN KEY (NOTIFICACION_ID) REFERENCES Notificaciones_Promociones (ID)
 );
+
+SELECT * FROM Posiciones;
+SELECT * FROM Notificaciones_Incidencias;
+SELECT * FROM Notificaciones_Promociones;
+SELECT * FROM Destinatarios_Promociones;
