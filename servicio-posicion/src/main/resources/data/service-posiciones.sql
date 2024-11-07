@@ -35,7 +35,7 @@ CREATE TABLE Destinatarios_Promociones
 (
     ID          INTEGER                               NOT NULL PRIMARY KEY AUTO_INCREMENT,
     NOTIFICACION_ID INTEGER                            NOT NULL,
-    TELEFONO     VARCHAR(50)                          NOT NULL,
+    EMAIL     VARCHAR(150)                          NOT NULL,
     FOREIGN KEY (NOTIFICACION_ID) REFERENCES Notificaciones_Promociones (ID)
 );
 

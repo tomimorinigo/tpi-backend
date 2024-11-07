@@ -33,7 +33,7 @@ public class PosicionService {
     // Endpoint 4 -> recibir posicion y evaluar si esta dentro de zonas peligrosas o fuera de radio
     public void recibirPosicion(PosicionDTO posicionDTO) {
         // Evaluar si el vehiculo se encuentra en una prueba
-        if (vehiculoService.recibirVehiculo(posicionDTO.getIdVehiculo())) {
+        if (vehiculoService.estaEnPruebaVehiculo(posicionDTO.getIdVehiculo())) {
 
             // Persistimos la posicion en la base de datos
             PosicionEntity posicion = posicionDTO.toEntity();

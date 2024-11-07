@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity @Table(name="Notificaciones_Promociones")
 @Getter @Setter @NoArgsConstructor
 public class NotificacionPromocionEntity {
@@ -24,11 +27,15 @@ public class NotificacionPromocionEntity {
     @Column(name="fecha_fin")
     private String fechaFin;
 
+    @OneToMany(mappedBy="notificacionPromocion")
+    private List<DestinatariosPromocionEntity> destinatariosPromocion;
+
     public NotificacionPromocionEntity(Integer idVehiculo, double porcentajeOferta, String fechaHora, String fechaFin){
         this.idVehiculo = idVehiculo;
         this.porcentajeOferta = porcentajeOferta;
         this.fechaHora = fechaHora;
         this.fechaFin = fechaFin;
+        destinatariosPromocion = new ArrayList<>();
     }
 
 }

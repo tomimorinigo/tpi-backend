@@ -135,4 +135,9 @@ public class PruebasService {
         return new PruebaDTO(prueba);
     }
 
+    public PruebaDTO consultarPrueba(Integer idPrueba){
+        PruebaEntity prueba = pruebasRepository.findById(idPrueba).orElseThrow();
+        return new PruebaDTO(prueba);
+    }
+
 }

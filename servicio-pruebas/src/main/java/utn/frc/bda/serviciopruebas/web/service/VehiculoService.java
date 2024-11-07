@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import utn.frc.bda.serviciopruebas.dal.VehiculoRepository;
 import utn.frc.bda.serviciopruebas.entities.VehiculoEntity;
+import utn.frc.bda.serviciopruebas.web.api.dto.VehiculoDTO;
 
 import java.util.Optional;
 
@@ -36,6 +37,11 @@ public class VehiculoService {
         Optional<VehiculoEntity> vehiculo = findById(idVehiculo);
         // Retornamos true si el vehiculo esta siendo probado en ese momento
         return !validarUsoVehiculo(vehiculo.orElseThrow());
+    }
+
+    public VehiculoDTO obtenerVehiculo(Integer idVehiculo){
+        Optional<VehiculoEntity> vehiculo = findById(idVehiculo);
+        return new VehiculoDTO(vehiculo.orElseThrow());
     }
 
 }

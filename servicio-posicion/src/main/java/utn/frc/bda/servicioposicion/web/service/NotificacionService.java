@@ -7,7 +7,13 @@ import org.springframework.web.client.RestTemplate;
 import utn.frc.bda.servicioposicion.dal.NotificacionIncidenciaRepository;
 import utn.frc.bda.servicioposicion.dal.NotificacionPromocionRepository;
 import utn.frc.bda.servicioposicion.entities.NotificacionIncidenciaEntity;
+import utn.frc.bda.servicioposicion.entities.NotificacionPromocionEntity;
+import utn.frc.bda.servicioposicion.web.api.dto.NotificacionIncidenteDTO;
+import utn.frc.bda.servicioposicion.web.api.dto.NotificacionPromocionDTO;
 import utn.frc.bda.servicioposicion.web.api.dto.PruebaDTO;
+import utn.frc.bda.servicioposicion.web.api.dto.VehiculoDTO;
+
+import java.util.List;
 
 import static utn.frc.bda.servicioposicion.utils.Utils.fechaActualFormatted;
 
@@ -19,14 +25,17 @@ public class NotificacionService {
     private NotificacionIncidenciaRepository notificacionIncidenciaRepository;
     private NotificacionPromocionRepository notificacionPromocionRepository;
     private EmailService emailService;
+    private VehiculoService vehiculoService;
 
     @Autowired
     public NotificacionService(NotificacionIncidenciaRepository notificacionIncidenciaRepository,
                                NotificacionPromocionRepository notificacionPromocionRepository,
-                               EmailService emailService){
+                               EmailService emailService,
+                               VehiculoService vehiculoService){
         this.notificacionIncidenciaRepository = notificacionIncidenciaRepository;
         this.notificacionPromocionRepository = notificacionPromocionRepository;
         this.emailService = emailService;
+        this.vehiculoService = vehiculoService;
     }
 
     // Crear notificacion de Incidencia
@@ -44,8 +53,9 @@ public class NotificacionService {
             // Persistir notificación de incidencia
             notificacionIncidenciaRepository.save(notificacionIncidencia);
 
+            // Generar mail con la notificación de incidencia
             String mensajeHtml = emailService.createHtmlMensaje(prueba, notificacionIncidencia, tipoIncidente);
-            // En el mail iria el mail del empleado pero por ahora lo mandamos a mi mail
+            // TODO: En el mail iria el mail del empleado pero por ahora lo mandamos a mi mail
             emailService.enviarEmailHtml("morinigotomas1@gmail.com", "Notificación de incidencia", mensajeHtml);
 
         } catch (Exception e) {
@@ -54,15 +64,32 @@ public class NotificacionService {
         }
     }
 
-    // TODO: Crear notificacion de Promoción --> ENDPOINT 5
-    public void enviarNotificacionPromocion(String idVehiculo){
-        // TODO: Enviar notificación de promoción
-        System.out.println("Enviando notificación de promoción");
+    // Crear notificacion de promoción
+    public void enviarNotificacionPromocion(NotificacionPromocionDTO notificacion){
+
+        NotificacionPromocionEntity notificacionPromocionEntity = notificacion.toEntity();
+        // Persistimos notificación de promoción
+        notificacionPromocionRepository.save(notificacionPromocionEntity);
+
+        // Buscamos el vehiculo
+        VehiculoDTO vehiculoDTO = vehiculoService.obtenerVehiculo(notificacionPromocionEntity.getIdVehiculo());
+
+        // Enviamos mail con la notificación de promoción
+        String mensajeHtml = emailService.createHtmlMensajePromocion(notificacionPromocionEntity, vehiculoDTO);
+
+        // Enviamos un mail para cada destinatario
+        notificacionPromocionEntity.getDestinatariosPromocion().forEach(destinatario -> {
+            emailService.enviarEmailHtml(destinatario.getEmail(), "Notificación de promoción", mensajeHtml);
+        });
     }
 
-    // TODO: Generar notificaciones por whatsapp
-    public void generarNotificacionesWhatsapp(){
-        // TODO: Generar notificaciones por whatsapp
-        System.out.println("Generando notificaciones por whatsapp");
+    public List<NotificacionIncidenteDTO> obtenerNotificacionesIncidentes(){
+        return notificacionIncidenciaRepository.findAll().stream().map(notificacion -> {
+            // Crear nuevo DTO
+            return new NotificacionIncidenteDTO(notificacion.getId(),
+                    notificacion.getIdVehiculo(), notificacion.getIdInteresado(), notificacion.getIdPrueba(),
+                    notificacion.getIdEmpleado(), notificacion.getTipoIncidente(), notificacion.getFechaHora());
+        }).toList();
     }
+
 }
