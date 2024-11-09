@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import utn.frc.bda.servicioreportes.web.service.ReporteService;
@@ -22,5 +23,10 @@ public class ReporteAPI {
     @GetMapping("/incidentes")
     public ResponseEntity<String> reporteIncidentes(){
         return new ResponseEntity<>(reporteService.getReporteIncidentes(), HttpStatus.OK);
+    }
+
+    @GetMapping("/incidentes-empleado")
+    public ResponseEntity<String> reporteIncidentesEmpleado(@RequestBody Integer legajo){
+        return new ResponseEntity<>(reporteService.getReporteIncidentesEmpleado(legajo), HttpStatus.OK);
     }
 }
