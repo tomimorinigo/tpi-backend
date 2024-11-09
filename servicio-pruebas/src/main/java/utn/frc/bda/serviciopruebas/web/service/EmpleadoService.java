@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import utn.frc.bda.serviciopruebas.dal.EmpleadoRepository;
 import utn.frc.bda.serviciopruebas.entities.EmpleadoEntity;
+import utn.frc.bda.serviciopruebas.entities.PruebaEntity;
+import utn.frc.bda.serviciopruebas.web.api.dto.EmpleadoDTO;
+import utn.frc.bda.serviciopruebas.web.api.dto.PruebaDTO;
 
 import java.util.Optional;
 
@@ -25,4 +28,9 @@ public class EmpleadoService {
         empleadoRepository.save(empleado);
     }
 
+
+    public EmpleadoDTO consultarEmpleado(Integer legajoEmpleado){
+        EmpleadoEntity empleado = empleadoRepository.findById(legajoEmpleado).orElseThrow();
+        return new EmpleadoDTO(empleado);
+    }
 }
