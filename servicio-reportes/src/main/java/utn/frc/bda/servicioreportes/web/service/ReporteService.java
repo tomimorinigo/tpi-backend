@@ -126,7 +126,7 @@ public class ReporteService {
         List<NotificacionIncidenteDTO> notificaciones = response.getBody();
         StringBuilder mensaje = new StringBuilder("=== Reporte de Incidente Empleado ===\n");
 
-        EmpleadoDTO empleado = restTemplate.getForObject(urlEmpleado + "/empleado?idEmpleado=" + idEmpleado, EmpleadoDTO.class);
+        EmpleadoDTO empleado = restTemplate.getForObject(urlEmpleado + "/empleado?legajoEmpleado=" + idEmpleado, EmpleadoDTO.class);
         if(empleado != null) {
             String datosEmpleado = String.format(
                     "\tEmpleado\n" +
@@ -140,7 +140,7 @@ public class ReporteService {
             );
             mensaje.append(datosEmpleado).append("\n");
         }else{
-            String datosEmpleado = "no existe empleado buscado";
+            String datosEmpleado = "No existe empleado buscado";
             mensaje.append(datosEmpleado).append("\n");
         }
 
@@ -156,12 +156,19 @@ public class ReporteService {
             }
 
             String mensajePrueba = String.format(
-                    "\t== Incidente %d ==\n" +
+                    "---------------------------------------- \n\n" +
+                            "\t== Incidente %d ==\n" +
                             "\t\tTipo de Incidente: %s\n" +
                             "\t\tFecha y Hora: %s\n\n",
                     notificacion.getId(),
                     notificacion.getTipoIncidente(),
                     notificacion.getFechaHora()
+            );
+
+            mensajePrueba += String.format(
+                    "\tEmpleado\n" +
+                            "\t\tLegajo: %d\n",
+                    prueba.getEmpleado().getLegajo()
             );
 
             // Información de la prueba asociada

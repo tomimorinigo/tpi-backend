@@ -28,7 +28,6 @@ public class EmpleadoService {
         empleadoRepository.save(empleado);
     }
 
-
     public EmpleadoDTO consultarEmpleado(Integer legajoEmpleado){
         EmpleadoEntity empleado = empleadoRepository.findById(legajoEmpleado).orElseThrow();
         return new EmpleadoDTO(empleado);
