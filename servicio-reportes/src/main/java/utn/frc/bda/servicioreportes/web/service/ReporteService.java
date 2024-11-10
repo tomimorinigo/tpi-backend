@@ -220,4 +220,16 @@ public class ReporteService {
         return mensaje.toString();
     }
 
+
+    public String getReportePruebasVehiculo(Integer idVehiculo){
+        RestTemplate restTemplate = new RestTemplate();
+        // Consumimos el endpoint y mapeamos el JSON a una lista de NotificacionIncidenteDTO
+        ResponseEntity<List<NotificacionPruebasVehiculoDTO>> response = restTemplate.exchange(
+                urlNotificacion + "/obtener-incidentes",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<NotificacionIncidenteDTO>>() {
+                }
+        );
+    }
 }

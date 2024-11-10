@@ -26,4 +26,9 @@ public class ReporteAPI {
     public ResponseEntity<String> reporteIncidentesEmpleado(@RequestParam Integer legajoEmpleado){
         return new ResponseEntity<>(reporteService.getReporteIncidentesEmpleado(legajoEmpleado), HttpStatus.OK);
     }
+
+    @GetMapping("/pruebas-vehiculo")
+    public ResponseEntity<String> reportePruebasPorVehiculo(@RequestParam Integer idVehiculo){
+        return new ResponseEntity<>(reporteService.getReportePruebasVehiculo(idVehiculo), HttpStatus.OK);
+    }
 }
