@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 import utn.frc.bda.serviciopruebas.web.service.InteresadoService;
 
 @RestController
-@RequestMapping("/interesado")
 public class InteresadoAPI {
 
     private InteresadoService interesadoService;
@@ -20,7 +19,7 @@ public class InteresadoAPI {
 
     // Endpoint -> Recibir un id del interesado y asignarlo como restringido
     // Ejemplo: http://localhost:8081/interesado/restringir-interesado?idVehiculo=1
-    @PutMapping("/restringir-interesado")
+    @PutMapping("/internal/interesado/restringir-interesado")
     public void restringirInteresado(@RequestParam Integer idVehiculo){
         interesadoService.restringirInteresado(idVehiculo);
     }

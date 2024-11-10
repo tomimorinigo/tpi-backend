@@ -12,7 +12,6 @@ import utn.frc.bda.serviciopruebas.web.api.dto.VehiculoDTO;
 import utn.frc.bda.serviciopruebas.web.service.VehiculoService;
 
 @RestController
-@RequestMapping("/vehiculo")
 public class VehiculoAPI {
 
     private VehiculoService vehiculoService;
@@ -24,12 +23,12 @@ public class VehiculoAPI {
 
     // Endpoint -> Recibir un id de vehiculo y evaluar si el vehiculo esta en prueba
     // Ejemplo: http://localhost:8081/vehiculo/recibir-vehiculo?idVehiculo=1
-    @GetMapping("/esta-en-prueba")
+    @GetMapping("/internal/vehiculo/esta-en-prueba")
     public Boolean recibirVehiculo(@RequestParam Integer idVehiculo){
         return vehiculoService.recibirVehiculo(idVehiculo);
     }
 
-    @GetMapping("/obtener-vehiculo")
+    @GetMapping("/internal/vehiculo/obtener-vehiculo")
     public ResponseEntity<VehiculoDTO> obtenerVehiculo(@RequestParam Integer idVehiculo){
         VehiculoDTO vehiculoDTO = vehiculoService.obtenerVehiculo(idVehiculo);
         return new ResponseEntity<>(vehiculoDTO, HttpStatus.OK);

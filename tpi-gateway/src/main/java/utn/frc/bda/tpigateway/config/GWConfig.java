@@ -16,11 +16,11 @@ public class GWConfig {
                                         @Value("${microservicio-reportes.url}") String uriReportes) {
         return builder.routes()
                 // Ruteo al Microservicio de Personas
-                .route(p -> p.path("/api/pruebas/**").uri(uriPruebas))
+                .route(p -> p.path("/api/ms-pruebas/**").uri(uriPruebas))
                 // Ruteo al Microservicio de Entradas
-                .route(p -> p.path("/api/posicion/**").uri(uriPosicion))
+                .route(p -> p.path("/api/ms-posicion/**").uri(uriPosicion))
                 // Ruteo al Microservicio de Reportes
-                .route(p -> p.path("/api/reportes/**").uri(uriReportes))
+                .route(p -> p.path("/api/ms-reportes/**").uri(uriReportes))
                 .build();
 
     }

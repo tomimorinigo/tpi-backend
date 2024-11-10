@@ -59,6 +59,6 @@ public class InteresadoEntity {
     }
 
     public boolean isRestringido(){
-        return restringido != 0;
+        return restringido.equals(1);
     }
 }

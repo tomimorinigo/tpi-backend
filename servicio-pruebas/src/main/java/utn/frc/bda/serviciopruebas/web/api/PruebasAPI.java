@@ -10,7 +10,6 @@ import utn.frc.bda.serviciopruebas.web.service.PruebasService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pruebas")
 public class PruebasAPI {
 
     private PruebasService pruebasService;
@@ -21,14 +20,14 @@ public class PruebasAPI {
     }
 
     // Endpoint 1 -> crear prueba
-    @PostMapping("/crear")
+    @PostMapping("/pruebas/crear")
     public ResponseEntity<PruebaDTO> crearPrueba(@RequestBody PruebaDTO prueba){
         // Creamos la prueba y retornamos el DTO
         return new ResponseEntity<>(pruebasService.crearPrueba(prueba), HttpStatus.CREATED);
     }
 
     // Endpoint 2 -> consultar pruebas en curso
-    @GetMapping("/en-curso")
+    @GetMapping("/pruebas/en-curso")
     public ResponseEntity<List<PruebaDTO>> consultarPruebasEnCurso(){
         // Consultamos la lista de pruebas en curso
         List<PruebaDTO> pruebas = pruebasService.consultarPruebasEnCurso();
@@ -40,20 +39,25 @@ public class PruebasAPI {
     }
 
     // Endpoint 3 -> finalizar prueba con comentarios
-    @PutMapping("/finalizar")
+    @PutMapping("/pruebas/finalizar")
     public ResponseEntity finalizarPrueba(@RequestBody PruebaDTO prueba){
         return pruebasService.finalizarPrueba(prueba)
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/prueba-actual")
+    @GetMapping("/internal/pruebas/prueba-actual")
     public ResponseEntity<PruebaDTO> consultarPruebaActual(@RequestParam Integer idVehiculo){
         return new ResponseEntity<>(pruebasService.consultarPruebaActual(idVehiculo), HttpStatus.OK);
     }
 
-    @GetMapping("/prueba")
+    @GetMapping("/internal/pruebas/prueba")
     public ResponseEntity<PruebaDTO> consultarPrueba(@RequestParam Integer idPrueba){
         return new ResponseEntity<>(pruebasService.consultarPrueba(idPrueba), HttpStatus.OK);
+    }
+
+    @GetMapping("/internal/pruebas/vehiculo")
+    public ResponseEntity<List<PruebaDTO>> consultarPruebasVehiculo(@RequestParam Integer idVehiculo){
+        return new ResponseEntity<>(pruebasService.consultarPruebasVehiculo(idVehiculo), HttpStatus.OK);
     }
 }

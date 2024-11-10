@@ -20,7 +20,7 @@ public class VehiculoService {
 
     public VehiculoDTO  obtenerVehiculo(Integer idVehiculo){
         RestTemplate restTemplate = new RestTemplate();
-        VehiculoDTO vehiculoDTO = restTemplate.getForObject(vehiculoServiceUrl + "obtener-vehiculo?idVehiculo=" + idVehiculo, VehiculoDTO.class);
+        VehiculoDTO vehiculoDTO = restTemplate.getForObject(vehiculoServiceUrl + "/obtener-vehiculo?idVehiculo=" + idVehiculo, VehiculoDTO.class);
         return vehiculoDTO;
     }
 

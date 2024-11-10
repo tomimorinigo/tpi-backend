@@ -11,7 +11,6 @@ import utn.frc.bda.servicioposicion.web.service.NotificacionService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/notificacion")
 public class NotificacionAPI {
 
     private NotificacionService notificacionService;
@@ -22,14 +21,14 @@ public class NotificacionAPI {
     }
 
     // Endpoint 5 -> notificacion de promociones
-    @PostMapping("/promocion")
+    @PostMapping("/notificacion/promocion")
     public ResponseEntity<String> notificarPromocion(@RequestBody  NotificacionPromocionDTO notificacion){
         System.out.println(notificacion);
         notificacionService.enviarNotificacionPromocion(notificacion);
         return new ResponseEntity<>("Notificacion de promocion enviada", HttpStatus.OK);
     }
 
-    @GetMapping("/obtener-incidentes")
+    @GetMapping("/internal/notificacion/obtener-incidentes")
     public ResponseEntity<List<NotificacionIncidenteDTO>> obtenerIncidentes(){
         return new ResponseEntity<>(notificacionService.obtenerNotificacionesIncidentes(), HttpStatus.OK);
     }

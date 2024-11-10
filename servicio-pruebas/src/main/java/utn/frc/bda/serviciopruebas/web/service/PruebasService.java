@@ -42,10 +42,6 @@ public class PruebasService {
     // Endpoint 1 -> crear prueba
     public PruebaDTO crearPrueba(PruebaDTO pruebaDTO){
 
-        System.out.println(pruebaDTO.getInteresado());
-        System.out.println(pruebaDTO.getEmpleado());
-        System.out.println(pruebaDTO.getVehiculo());
-
         Integer interesadoId = pruebaDTO.getInteresado().getId();
         Integer empleadoId = pruebaDTO.getEmpleado().getLegajo();
         Integer vehiculoId = pruebaDTO.getVehiculo().getId();
@@ -61,7 +57,7 @@ public class PruebasService {
         prueba.setFechaHoraInicio(formatter.format(fechaHoraActual));
 
         // Valida que el interesado no tenga la licencia vencida y que no este restringido
-        if(interesado.getLicenciaVencida() && interesado.isRestringido()){
+        if(interesado.getLicenciaVencida() || interesado.isRestringido()){
             throw new IllegalArgumentException("El interesado ya tiene la licencia vencida o está restringido a probar vehículos");
         }
         prueba.setInteresado(interesado);
@@ -138,6 +134,11 @@ public class PruebasService {
     public PruebaDTO consultarPrueba(Integer idPrueba){
         PruebaEntity prueba = pruebasRepository.findById(idPrueba).orElseThrow();
         return new PruebaDTO(prueba);
+    }
+
+    public List<PruebaDTO> consultarPruebasVehiculo(Integer idVehiculo){
+        VehiculoEntity vehiculo = vehiculoService.findById(idVehiculo).orElseThrow();
+        return vehiculo.getPruebas().stream().map(PruebaDTO::new).toList();
     }
 
 }
