@@ -36,7 +36,7 @@ public class PosicionService {
     }
 
     // Endpoint 4 -> recibir posicion y evaluar si esta dentro de zonas peligrosas o fuera de radio
-    public void recibirPosicion(PosicionDTO posicionDTO) {
+    public String recibirPosicion(PosicionDTO posicionDTO) {
         // Evaluar si el vehiculo se encuentra en una prueba
         if (vehiculoService.estaEnPruebaVehiculo(posicionDTO.getIdVehiculo())) {
 
@@ -53,19 +53,19 @@ public class PosicionService {
                     notificacionService.enviarNotificacionIncidencia(posicionDTO.getIdVehiculo(), TIPO_INCIDENTE_ZONA_PELIGROSA);
                     // Cambiarle al interesado su atributo de restringido
                     interesadoService.restringirInteresado(posicionDTO.getIdVehiculo());
-                    System.out.println("El vehiculo esta en zona peligrosa");
+                    return "El vehiculo esta en zona peligrosa";
                 }
 
-                System.out.println("El vehiculo esta dentro de radio y fuera de zonas peligrosas");
+                return "El vehiculo esta dentro de radio y fuera de zonas peligrosas";
             } else {
                 // Generar notificación de incidencia de fuera de radio
                 notificacionService.enviarNotificacionIncidencia(posicionDTO.getIdVehiculo(), TIPO_INCIDENTE_FUERA_DE_RADIO);
                 // Cambiarle al interesado su atributo de restringido
                 interesadoService.restringirInteresado(posicionDTO.getIdVehiculo());
-                System.out.println("El vehiculo esta fuera de radio");
+                return "El vehiculo esta fuera de radio";
             }
         } else {
-           System.out.println("El vehiculo no se encuentra en una prueba");
+           return "El vehiculo no se encuentra en una prueba";
         }
     }
 

@@ -14,7 +14,7 @@ public class VehiculoService {
 
     public boolean estaEnPruebaVehiculo(Integer idVehiculo){
         RestTemplate restTemplate = new RestTemplate();
-        Boolean result = restTemplate.getForObject(vehiculoServiceUrl + "esta-en-prueba?idVehiculo=" + idVehiculo, Boolean.class);
+        Boolean result = restTemplate.getForObject(vehiculoServiceUrl + "/esta-en-prueba?idVehiculo=" + idVehiculo, Boolean.class);
         return Boolean.TRUE.equals(result);
     }
 

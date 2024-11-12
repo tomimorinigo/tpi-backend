@@ -13,6 +13,6 @@ public class ZonaPeligrosa {
     // Comprobar si un punto está dentro de la zona peligrosa
     public boolean contienePunto(double lat, double lon) {
         return (lat <= noroeste.getLat() && lat >= sureste.getLat()) &&
-                (lon <= noroeste.getLon() && lon >= sureste.getLon());
+                (lon >= noroeste.getLon() && lon <= sureste.getLon());
     }
 }

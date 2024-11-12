@@ -21,8 +21,7 @@ public class PosicionAPI {
     // Endpoint 4 -> recibir posicion y evaluar si esta dentro de zonas peligrosas o fuera de radio
     @PostMapping("/posicion/recibir-posicion")
     public ResponseEntity<String> recibirPosicion(@RequestBody PosicionDTO posicion){
-        posicionService.recibirPosicion(posicion);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(posicionService.recibirPosicion(posicion), HttpStatus.OK);
     }
 
     @GetMapping("/internal/posicion/kilometros-vehiculo")
