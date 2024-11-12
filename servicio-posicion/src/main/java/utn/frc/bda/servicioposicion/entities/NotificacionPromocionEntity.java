@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class NotificacionPromocionEntity {
     private double porcentajeOferta;
 
     @Column(name="fecha_hora")
-    private String fechaHora;
+    private LocalDateTime fechaHora;
 
     @Column(name="fecha_fin")
     private String fechaFin;
@@ -30,7 +31,7 @@ public class NotificacionPromocionEntity {
     @OneToMany(mappedBy="notificacionPromocion")
     private List<DestinatariosPromocionEntity> destinatariosPromocion;
 
-    public NotificacionPromocionEntity(Integer idVehiculo, double porcentajeOferta, String fechaHora, String fechaFin){
+    public NotificacionPromocionEntity(Integer idVehiculo, double porcentajeOferta, LocalDateTime fechaHora, String fechaFin){
         this.idVehiculo = idVehiculo;
         this.porcentajeOferta = porcentajeOferta;
         this.fechaHora = fechaHora;

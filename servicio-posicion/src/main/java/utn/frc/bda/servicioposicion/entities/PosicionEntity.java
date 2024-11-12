@@ -3,6 +3,8 @@ package utn.frc.bda.servicioposicion.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity @Table(name="posiciones")
 @Getter @Setter @ToString @NoArgsConstructor
 public class PosicionEntity {
@@ -19,7 +21,7 @@ public class PosicionEntity {
     private double longitud;
 
     @Column(name="fecha_hora", nullable=false)
-    private String fechaHora;
+    private LocalDateTime fechaHora;
 
     @Column(name = "id_vehiculo")
     private Integer idVehiculo;

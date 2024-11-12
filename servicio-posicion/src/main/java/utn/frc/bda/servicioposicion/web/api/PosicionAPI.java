@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import utn.frc.bda.servicioposicion.web.api.dto.PosicionDTO;
 import utn.frc.bda.servicioposicion.web.service.PosicionService;
 
+
 @RestController
-@RequestMapping("/posicion")
 public class PosicionAPI {
 
     private PosicionService posicionService;
@@ -19,10 +19,15 @@ public class PosicionAPI {
     }
 
     // Endpoint 4 -> recibir posicion y evaluar si esta dentro de zonas peligrosas o fuera de radio
-    @PostMapping("/recibir-posicion")
+    @PostMapping("/posicion/recibir-posicion")
     public ResponseEntity<String> recibirPosicion(@RequestBody PosicionDTO posicion){
         posicionService.recibirPosicion(posicion);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/internal/posicion/kilometros-vehiculo")
+    public ResponseEntity<Double> calcularKilometrosVehiculo(@RequestParam Integer idVehiculo, @RequestParam String desde, @RequestParam String hasta) {
+        return new ResponseEntity<>(posicionService.calcularKilometrosVehiculo(idVehiculo, desde, hasta), HttpStatus.OK);
     }
 
 }

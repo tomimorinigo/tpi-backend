@@ -4,7 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import utn.frc.bda.servicioposicion.dal.PosicionRepository;
 import utn.frc.bda.servicioposicion.entities.PosicionEntity;
+import utn.frc.bda.servicioposicion.mapa.Coordenadas;
 import utn.frc.bda.servicioposicion.web.api.dto.PosicionDTO;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import static utn.frc.bda.servicioposicion.utils.Utils.*;
 
@@ -62,5 +67,22 @@ public class PosicionService {
         } else {
            System.out.println("El vehiculo no se encuentra en una prueba");
         }
+    }
+
+    public Double calcularKilometrosVehiculo(Integer idVehiculo, String desde, String hasta) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime fechaDesde = LocalDateTime.parse(desde, formatter);
+        LocalDateTime fechaHasta = LocalDateTime.parse(hasta, formatter);
+        Coordenadas coordenadasAgencia = agenciaService.getCoordenadasAgencia();
+
+
+        double kilometros = 0;
+        for (PosicionEntity posicion : posicionRepository.findAllByIdVehiculoAndFechaHoraBetween(idVehiculo, fechaDesde, fechaHasta)) {
+            // Calcular la distancia euclídea entre la posición del vehículo y la agencia
+            double distancia = agenciaService.calcularDistancia(coordenadasAgencia.getLat(), coordenadasAgencia.getLon(), posicion.getLatitud(), posicion.getLongitud());
+            kilometros += distancia;
+        }
+
+        return kilometros;
     }
 }

@@ -1,6 +1,7 @@
 package utn.frc.bda.serviciopruebas.web.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import utn.frc.bda.serviciopruebas.dal.EmpleadoRepository;
 import utn.frc.bda.serviciopruebas.dal.InteresadosRepository;
@@ -14,6 +15,7 @@ import utn.frc.bda.serviciopruebas.web.api.dto.PruebaDTO;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @Service
@@ -54,7 +56,7 @@ public class PruebasService {
         // Obtencion de la fecha y hora actual de la prueba
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime fechaHoraActual = LocalDateTime.now();
-        prueba.setFechaHoraInicio(formatter.format(fechaHoraActual));
+        prueba.setFechaHoraInicio(LocalDateTime.parse(fechaHoraActual.format(formatter), formatter));
 
         // Valida que el interesado no tenga la licencia vencida y que no este restringido
         if(interesado.getLicenciaVencida() || interesado.isRestringido()){
@@ -108,7 +110,7 @@ public class PruebasService {
             // Obtencion de la fecha actual para la fecha de finalización de la prueba
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             LocalDateTime fechaHoraActual = LocalDateTime.now();
-            pruebaFinalizada.setFechaHoraFin(String.valueOf(fechaHoraActual));
+            pruebaFinalizada.setFechaHoraFin(LocalDateTime.parse(fechaHoraActual.format(formatter), formatter));
 
             // Borramos la prueba de la lista de pruebas del vehiculo
             VehiculoEntity vehiculo = pruebaFinalizada.getVehiculo();
@@ -139,6 +141,16 @@ public class PruebasService {
     public List<PruebaDTO> consultarPruebasVehiculo(Integer idVehiculo){
         VehiculoEntity vehiculo = vehiculoService.findById(idVehiculo).orElseThrow();
         return vehiculo.getPruebas().stream().map(PruebaDTO::new).toList();
+    }
+
+    public List<PruebaDTO> consultarPruebasPeriodoVehiculo(Integer idVehiculo, String desde, String hasta){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime desdeDate = LocalDateTime.parse(desde, formatter);
+        LocalDateTime hastaDate = LocalDateTime.parse(hasta, formatter);
+
+        List<PruebaEntity> pruebas = pruebasRepository.findAllByVehiculoIdAndFechaHoraInicioBetween(idVehiculo, desdeDate, hastaDate);
+
+        return pruebas.stream().map(PruebaDTO::new).toList();
     }
 
 }

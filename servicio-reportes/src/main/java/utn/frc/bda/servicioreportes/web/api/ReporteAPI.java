@@ -28,11 +28,11 @@ public class ReporteAPI {
         return new ResponseEntity<>(reporteService.getReporteIncidentesEmpleado(legajoEmpleado), HttpStatus.OK);
     }
 
-    // Reporte 3 Cantidad de kilómetros de prueba que recorrió un vehículo en un período determinado.
-    /*@GetMapping("/kilometros-vehiculo")
-    public ResponseEntity<String> reporteKilometrosVehiculo(@RequestParam Integer idVehiculo){
-        return new ResponseEntity<>(reporteService.getReporteKilometrosVehiculo(idVehiculo), HttpStatus.OK);
-    }*/
+    // Reporte 3
+    @GetMapping("/kilometros-vehiculo")
+    public ResponseEntity<String> reporteKilometrosVehiculo(@RequestParam Integer idVehiculo, @RequestParam String desde, @RequestParam String hasta){
+        return new ResponseEntity<>(reporteService.getReporteKilometrosVehiculo(idVehiculo, desde, hasta), HttpStatus.OK);
+    }
 
     // Reporte 4
     @GetMapping("/pruebas-vehiculo")

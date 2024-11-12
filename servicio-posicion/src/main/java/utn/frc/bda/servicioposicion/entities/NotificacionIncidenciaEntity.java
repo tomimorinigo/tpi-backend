@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity @Table(name="Notificaciones_Incidencias")
 @Getter @Setter @NoArgsConstructor
 public class NotificacionIncidenciaEntity {
@@ -28,9 +30,9 @@ public class NotificacionIncidenciaEntity {
     private String tipoIncidente;
 
     @Column(name="fecha_hora")
-    private String fechaHora;
+    private LocalDateTime fechaHora;
 
-    public NotificacionIncidenciaEntity(Integer idVehiculo, Integer idInteresado, Integer idPrueba, Integer idEmpleado, String tipoIncidente, String fechaHora){
+    public NotificacionIncidenciaEntity(Integer idVehiculo, Integer idInteresado, Integer idPrueba, Integer idEmpleado, String tipoIncidente, LocalDateTime fechaHora){
         this.idVehiculo = idVehiculo;
         this.idInteresado = idInteresado;
         this.idPrueba = idPrueba;

@@ -20,4 +20,10 @@ public class PosicionDTO {
     public PosicionEntity toEntity(){
         return new PosicionEntity(latitud, longitud, idVehiculo);
     }
+
+    public PosicionDTO(PosicionEntity posicion){
+        this.latitud = posicion.getLatitud();
+        this.longitud = posicion.getLongitud();
+        this.idVehiculo = posicion.getIdVehiculo();
+    }
 }

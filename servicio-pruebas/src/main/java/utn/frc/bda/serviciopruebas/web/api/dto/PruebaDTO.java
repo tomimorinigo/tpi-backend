@@ -16,8 +16,8 @@ public class PruebaDTO {
 
     public PruebaDTO(PruebaEntity prueba) {
         this.id = prueba.getId();
-        this.fechaHoraInicio = prueba.getFechaHoraInicio();
-        this.fechaHoraFin = prueba.getFechaHoraFin();
+        this.fechaHoraInicio = String.valueOf(prueba.getFechaHoraInicio());
+        this.fechaHoraFin = String.valueOf(prueba.getFechaHoraFin());
         this.comentarios = prueba.getComentarios();
         this.interesado = new InteresadoDTO(prueba.getInteresado());
         this.empleado = new EmpleadoDTO(prueba.getEmpleado());

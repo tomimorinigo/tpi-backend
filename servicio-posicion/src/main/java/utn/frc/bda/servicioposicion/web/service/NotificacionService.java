@@ -13,6 +13,7 @@ import utn.frc.bda.servicioposicion.web.api.dto.NotificacionPromocionDTO;
 import utn.frc.bda.servicioposicion.web.api.dto.PruebaDTO;
 import utn.frc.bda.servicioposicion.web.api.dto.VehiculoDTO;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static utn.frc.bda.servicioposicion.utils.Utils.fechaActualFormatted;
@@ -85,10 +86,15 @@ public class NotificacionService {
 
     public List<NotificacionIncidenteDTO> obtenerNotificacionesIncidentes(){
         return notificacionIncidenciaRepository.findAll().stream().map(notificacion -> {
+
+            // Formatear fecha de notificación
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String fechaHora = notificacion.getFechaHora().format(formatter);
+
             // Crear nuevo DTO
             return new NotificacionIncidenteDTO(notificacion.getId(),
                     notificacion.getIdVehiculo(), notificacion.getIdInteresado(), notificacion.getIdPrueba(),
-                    notificacion.getIdEmpleado(), notificacion.getTipoIncidente(), notificacion.getFechaHora());
+                    notificacion.getIdEmpleado(), notificacion.getTipoIncidente(), fechaHora);
         }).toList();
     }
 

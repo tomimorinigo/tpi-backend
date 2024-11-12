@@ -3,6 +3,9 @@ package utn.frc.bda.serviciopruebas.entities;
 import lombok.*;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Entity @Table(name="pruebas")
 @Getter @Setter @NoArgsConstructor
 public class PruebaEntity {
@@ -13,10 +16,10 @@ public class PruebaEntity {
     private Integer id;
 
     @Column(name="fecha_hora_inicio", nullable=false)
-    private String fechaHoraInicio;
+    private LocalDateTime fechaHoraInicio;
 
     @Column(name="fecha_hora_fin", nullable=true)
-    private String fechaHoraFin;
+    private LocalDateTime fechaHoraFin;
 
     @Column(name="comentarios")
     private String comentarios;
@@ -32,11 +35,6 @@ public class PruebaEntity {
     @ManyToOne
     @JoinColumn(name="id_vehiculo")
     private VehiculoEntity vehiculo;
-
-    public PruebaEntity(Integer id, String comentarios){
-        this.id = id;
-        this.comentarios = comentarios;
-    }
 
     @Override
     public String toString() {

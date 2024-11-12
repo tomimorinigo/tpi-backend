@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import utn.frc.bda.servicioposicion.mapa.AgenciaConfig;
+import utn.frc.bda.servicioposicion.mapa.Coordenadas;
 import utn.frc.bda.servicioposicion.web.api.dto.PosicionDTO;
 
 @Service
@@ -24,9 +25,10 @@ public class AgenciaService {
         }
     }
 
-    private double calcularDistancia(double lat1, double long1, double lat2, double long2) {
+    public double calcularDistancia(double lat1, double long1, double lat2, double long2) {
         // Calcular la distancia euclídea entre dos puntos
-        return Math.sqrt(Math.pow(lat1 - lat2, 2) + Math.pow(long1 - long2, 2));
+        final double FACTOR_KM = 111.32;
+        return Math.sqrt(Math.pow(lat1 - lat2, 2) + Math.pow(long1 - long2, 2)) * FACTOR_KM;
     }
 
     public boolean validarPosicionEnRadioAgencia(PosicionDTO posicion) {
@@ -45,5 +47,9 @@ public class AgenciaService {
         // Devuelve true si la posicion está dentro de alguna zona restringida
         return agenciaConfig.getZonasRestringidas().stream()
                 .anyMatch(zona -> zona.contienePunto(posicion.getLatitud(), posicion.getLongitud()));
+    }
+
+    public Coordenadas getCoordenadasAgencia() {
+        return agenciaConfig.getCoordenadasAgencia();
     }
 }

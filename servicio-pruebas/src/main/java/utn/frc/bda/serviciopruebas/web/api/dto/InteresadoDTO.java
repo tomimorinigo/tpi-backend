@@ -23,6 +23,6 @@ public class InteresadoDTO {
         this.apellido = interesado.getApellido();
         this.restringido = interesado.getRestringido();
         this.nroLicencia = interesado.getNroLicencia();
-        this.fechaVencimientoLicencia = interesado.getFechaVencimientoLicencia();
+        this.fechaVencimientoLicencia = String.valueOf(interesado.getFechaVencimientoLicencia());
     }
 }

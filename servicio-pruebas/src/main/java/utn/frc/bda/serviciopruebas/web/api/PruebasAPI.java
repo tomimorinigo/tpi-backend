@@ -60,4 +60,9 @@ public class PruebasAPI {
     public ResponseEntity<List<PruebaDTO>> consultarPruebasVehiculo(@RequestParam Integer idVehiculo){
         return new ResponseEntity<>(pruebasService.consultarPruebasVehiculo(idVehiculo), HttpStatus.OK);
     }
+
+    @GetMapping("/internal/pruebas/periodo-vehiculo")
+    public ResponseEntity<List<PruebaDTO>> consultarPruebasPeriodo(@RequestParam Integer idVehiculo, @RequestParam String desde, @RequestParam String hasta){
+        return new ResponseEntity<>(pruebasService.consultarPruebasPeriodoVehiculo(idVehiculo, desde, hasta), HttpStatus.OK);
+    }
 }
